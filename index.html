@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-District Training Calendar</title>
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <header class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between border-b pb-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">Multi-District Training Calendar</h1>
+                <p class="text-slate-600 mt-1">Live schedule of upcoming courses, workshops, and assessments across districts.</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <label for="districtFilter" class="block text-sm font-medium text-slate-700 mb-1">Filter by District:</label>
+                <select id="districtFilter" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Districts</option>
+                    <option value="Hunter Valley">Hunter Valley</option>
+                    <!-- Add more districts here as you add them -->
+                </select>
+            </div>
+        </header>
+
+        <!-- Calendar Container -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <div id='calendar'></div>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listMonth'
+                },
+                // This loads your data file automatically
+                events: 'courses.json',
+                eventClick: function(info) {
+                    alert(
+                        info.event.title + '\n\n' +
+                        '📅 Date: ' + info.event.start.toLocaleDateString() + '\n' +
+                        '📍 Location: ' + (info.event.extendedProps.location || 'N/A') + '\n' +
+                        'ℹ️ Details: ' + (info.event.extendedProps.description || 'N/A')
+                    );
+                }
+            });
+            calendar.render();
+
+            // District Filter Logic
+            document.getElementById('districtFilter').addEventListener('change', function(e) {
+                var val = e.target.value;
+                // Simple reload or refetch logic can be expanded here
+            });
+        });
+    </script>
+</body>
+</html>
